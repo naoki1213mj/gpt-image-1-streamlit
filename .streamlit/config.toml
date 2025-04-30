@@ -1,4 +1,12 @@
 [server]
-port = 8501
-enableXsrfProtection = false
 headless = true
+port = 8501
+enableCORS = false      # App Service で問題になる場合は false 推奨
+enableXsrfProtection = true
+
+[theme]
+primaryColor = "#3b82f6"
+backgroundColor = "#0f172a"
+secondaryBackgroundColor = "#1e293b"
+textColor = "#e2e8f0"
+font = "sans serif"
