@@ -1,7 +1,46 @@
-.git
+# ───────── 基本 ─────────
 __pycache__/
-*.pyc
+*.py[cod]          # コンパイル済み Python
 *.pyo
 *.pyd
-*.db
-.streamlit/secrets.toml   # ← ローカル秘密情報をビルドに含めない
+
+# ───────── 仮想環境 ─────────
+.venv/
+venv/
+env/
+
+# ───────── バージョン管理 ─────────
+.git/
+.gitignore
+
+# ───────── OS／エディタごみ ─────────
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# ───────── ビルドキャッシュ ─────────
+.mypy_cache/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# ───────── ログ・一時ファイル ─────────
+*.log
+tmp/
+history/           # Streamlit 生成画像をローカル保存している場合
+
+# ───────── 機密設定 ─────────
+*.env              # .env, .env.local, など全部
+secrets.toml       # Streamlit 用シークレット
+.azure/            # Azure CLI 認証キャッシュ (存在する場合)
+
+# ───────── テスト・ドキュメント ─────────
+tests/
+docs/
+
+# （必要に応じて追加）
+# static/uploads/
+# *.png  <- テンポラリ画像をビルドに含めたくない場合はコメント解除
