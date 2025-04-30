@@ -1,0 +1,56 @@
+/* ===== Global colours & fonts ===== */
+body            {background:#0f172a;color:#e2e8f0;font-family:'Inter',sans-serif;}
+:root{
+  --primary:#7dd3fc;--primary-hover:#38bdf8;
+  --cta:#f472b6;--cta-hover:#ec4899;
+  --accent:#a78bfa;--success:#6ee7b7;--border:#475569;
+}
+/* ===== Core buttons ===== */
+.stButton button{
+  border:none;border-radius:.5rem;font-weight:600;transition:.2s all;
+}
+.stButton[data-testid="baseButton-primary"] button{
+  background:linear-gradient(135deg,var(--cta),var(--cta-hover));
+  color:#fff;box-shadow:0 4px 10px rgba(244,114,182,.3);
+}
+.stButton[data-testid="baseButton-primary"] button:hover{
+  transform:translateY(-2px);box-shadow:0 6px 15px rgba(244,114,182,.4);
+}
+.stButton[data-testid="baseButton-secondary"] button{
+  background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;
+  box-shadow:0 4px 10px rgba(59,130,246,.3);
+}
+.stButton[data-testid="baseButton-secondary"] button:hover{
+  transform:translateY(-2px);box-shadow:0 6px 15px rgba(59,130,246,.35);
+}
+/* ===== Tabs ===== */
+div[data-testid="stTabsHeader"]{
+  background:rgba(255,255,255,.05);border-radius:.5rem;padding:.25rem;
+}
+button[role="tab"][aria-selected="true"]{
+  background:rgba(255,255,255,.1);box-shadow:0 2px 4px rgba(0,0,0,.1);
+}
+/* ===== Gallery ===== */
+.gallery-card{
+  background:rgba(30,41,59,.4);border-radius:.75rem;padding:.75rem;
+  border:1px solid rgba(71,85,105,.5);margin-bottom:1rem;
+  transition:.3s all;box-shadow:0 4px 6px rgba(0,0,0,.1);
+}
+.gallery-card:hover{
+  transform:translateY(-4px);border-color:var(--primary);
+  box-shadow:0 10px 15px rgba(0,0,0,.2);
+}
+.gallery-image{border-radius:.5rem;width:100%;margin-bottom:.5rem;}
+.gallery-prompt{font-size:.875rem;color:#94a3b8;max-height:2.5rem;overflow:hidden;}
+.gallery-meta{font-size:.75rem;color:#64748b;display:flex;justify-content:space-between;}
+/* ===== Expander & FileUploader ===== */
+div[data-testid="stExpander"]{
+  border:1px solid rgba(71,85,105,.2);border-radius:.5rem;
+}
+div[data-testid="stFileUploader"]>section{
+  border:1px dashed var(--border);border-radius:.5rem;padding:1rem;
+}
+/* ===== Animations ===== */
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}
+                  to{opacity:1;transform:translateY(0);} }
+.fade-in{animation:fadeIn .5s ease forwards;}
