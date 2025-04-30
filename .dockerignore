@@ -1,0 +1,7 @@
+.git
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+.streamlit/secrets.toml   # ← ローカル秘密情報をビルドに含めない
