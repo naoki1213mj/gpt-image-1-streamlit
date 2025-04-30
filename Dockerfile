@@ -1,24 +1,33 @@
-# ---- ベースイメージ：Slim な公式 Python
-FROM python:3.12-slim AS base
+# ---------- ビルドステージ ----------
+FROM python:3.12-slim AS builder
 
-# ---- システム依存ライブラリを最小限インストール
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc build-essential libjpeg-dev zlib1g-dev && \
-    rm -rf /var/lib/apt/lists/*
-
-# ---- 作業ディレクトリを作成
 WORKDIR /app
 
-# ---- Python 依存を先に入れてキャッシュ利用
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# 依存ファイルだけ先にコピーしてキャッシュ
+COPY requirements.txt ./
+RUN pip install --upgrade pip \
+ && pip wheel --wheel-dir /wheels -r requirements.txt
 
-# ---- アプリソースをコピー
+# ---------- ランタイムステージ ----------
+FROM python:3.12-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    # Streamlit の標準ポート
+    PORT=8501
+
+WORKDIR /app
+
+# wheel を展開して軽量インストール
+COPY --from=builder /wheels /wheels
+RUN pip install /wheels/*
+
+# アプリのコードを最後にコピー
 COPY . .
 
-# ---- Streamlit 実行ポート（App Service では WEBSITES_PORT で上書きしても OK）
-ENV PORT=8501
-EXPOSE 8501
+# 本番用設定
+ENV STREAMLIT_SERVER_HEADLESS=true
+#   └ Streamlit 1.25+ は headless 自動判定しますが安全のため指定
 
-# ---- エントリポイント
-CMD ["streamlit", "run", "app.py", "--server.port", "8501", "--server.address", "0.0.0.0"]
+EXPOSE 8501
+CMD ["streamlit","run","app.py","--server.port","8501","--server.address","0.0.0.0"]
