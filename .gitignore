@@ -52,6 +52,7 @@ __pypackages__/
 *.pem
 secrets.toml
 *.env
+.env
 
 ###############################################################################
 # Docker / Container artefacts
