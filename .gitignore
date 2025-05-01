@@ -50,6 +50,8 @@ uv.lock                   # uv のロックファイル（任意で追跡して�
 .pdm.toml .pdm-python     # PDM
 __pypackages__/
 *.pem
+secrets.toml
+*.env
 
 ###############################################################################
 # Docker / Container artefacts
