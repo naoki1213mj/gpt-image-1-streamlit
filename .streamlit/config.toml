@@ -1,12 +1,35 @@
+# ========================================
+# Streamlit server settings
+# ========================================
 [server]
-headless = true
-port = 8501
-enableCORS = false      # App Service で問題になる場合は false 推奨
-enableXsrfProtection = true
+headless = true           # コンテナ／App Service では true 固定
+port     = "$PORT"        # ★環境変数 PORT（App Service が注入）に丸投げ
+enableCORS            = false  # 逆プロキシの背後なら無効化しても可
+enableXsrfProtection  = true   # CORS を切るならこちらは true に
+# address = "0.0.0.0"          # 明示的にバインドしたい場合のみ
 
+# （オプション）Cookie 署名キー。Key Vault から環境変数で渡すならコメントアウト
+# cookieSecret = "<<<long-random-hex>>>"
+
+# ========================================
+# UI theme
+# ========================================
 [theme]
-primaryColor = "#3b82f6"
-backgroundColor = "#0f172a"
+primaryColor            = "#3b82f6"
+backgroundColor         = "#0f172a"
 secondaryBackgroundColor = "#1e293b"
-textColor = "#e2e8f0"
-font = "sans serif"
+textColor               = "#e2e8f0"
+font                    = "sans serif"   # 有効値: sans serif / serif / monospace
+
+
+az containerapp create -g $RG -n gptimage1-streamlit \
+  --image $ACR.azurecr.io/gptimage1-streamlit:1.1 \
+  --target-port 8501 \
+  --ingress external \
+  --registry-server $ACR.azurecr.io \
+  --cpu 0.5 --memory 1Gi \
+  --environment gptimage1streamlit-env
+``` :contentReference[oaicite:6]{index=6}
+az keyvault set-policy -n kv-gptimage1 \
+  --secret-permissions get \
+  --spn c870bf83-a85a-4ef7-b6ed-184462e75069

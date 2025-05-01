@@ -30,4 +30,4 @@ ENV STREAMLIT_SERVER_HEADLESS=true
 #   └ Streamlit 1.25+ は headless 自動判定しますが安全のため指定
 
 EXPOSE 8501
-CMD ["streamlit","run","app.py","--server.port","8501","--server.address","0.0.0.0"]
+CMD ["streamlit", "run", "app.py", "--server.port", "8501", "--server.address", "0.0.0.0"]
