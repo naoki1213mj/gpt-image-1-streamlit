@@ -22,14 +22,4 @@ textColor               = "#e2e8f0"
 font                    = "sans serif"   # 有効値: sans serif / serif / monospace
 
 
-az containerapp create -g $RG -n gptimage1-streamlit \
-  --image $ACR.azurecr.io/gptimage1-streamlit:1.1 \
-  --target-port 8501 \
-  --ingress external \
-  --registry-server $ACR.azurecr.io \
-  --cpu 0.5 --memory 1Gi \
-  --environment gptimage1streamlit-env
-``` :contentReference[oaicite:6]{index=6}
-az keyvault set-policy -n kv-gptimage1 \
-  --secret-permissions get \
-  --spn c870bf83-a85a-4ef7-b6ed-184462e75069
+
