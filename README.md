@@ -44,19 +44,23 @@
 
 ```text
 gpt-image-1-streamlit/
-├── .venv/ # uv仮想環境 (Git管理外)
-├── app.py # Streamlitアプリケーション本体
-├── requirements.txt # Python依存パッケージリスト
-├── .env.example # 環境変数テンプレート
-├── .env # ローカル用環境変数 (★Git管理外)
 ├── .streamlit/
-│ ├── config.toml # Streamlit設定
-│ └── secrets.toml # Streamlitシークレット (★Git管理外)
-├── Dockerfile # Dockerイメージ定義
-├── .dockerignore # Docker除外設定
-├── static/ # (オプション) CSS等
-│ └── theme.css
-└── README.md # このファイル
+│   └── config.toml          # Streamlit設定
+├── static/
+│   └── theme.css            # カスタムCSS
+├── app.py                   # Streamlitアプリケーション本体
+├── requirements.txt         # Python依存パッケージリスト
+├── .env.example             # 環境変数テンプレート
+├── Dockerfile               # Dockerイメージ定義
+├── .dockerignore            # Docker除外設定
+├── .gitignore               # Git除外設定
+├── LICENSE                  # MITライセンス
+└── README.md                # このファイル
+
+# ローカル開発時に作成されるファイル (Git管理外)
+├── .venv/                   # uv仮想環境
+├── .env                     # ローカル用環境変数
+└── .streamlit/secrets.toml  # Streamlitシークレット (任意)
 ```
 
 ## セットアップとローカル実行 🚀
@@ -100,19 +104,23 @@ gpt-image-1-streamlit/
         cp .env.example .env
         ```
 
-    * `.env` ファイルを開き、使用するAPIキーやエンドポイントなどを設定します。最低限、`OPENAI_API_KEY` または Azure OpenAI関連の変数を設定してください。
+    * `.env` ファイルを開き、使用するAPIキーやエンドポイントなどを設定します。
 
         ```dotenv:.env (設定例)
-        # --- OpenAI API を使う場合 ---
-        # USE_AZURE_OPENAI=false
-        # OPENAI_API_KEY="sk-..."
+        # --- 通常のOpenAI API を使う場合 ---
+        AI_HOST=OpenAI
+        OPENAI_API_KEY=sk-...
+        EASY_AUTH_ENABLED=false
+        LOG_LEVEL=INFO
 
         # --- Azure OpenAI Service を使う場合 ---
-        USE_AZURE_OPENAI=true
-        OPENAI_API_KEY="YOUR_AZURE_OPENAI_API_KEY"
-        AZURE_OPENAI_ENDPOINT="https://YOUR_AOAI_RESOURCE_NAME.openai.azure.com/"
-        AZURE_OPENAI_API_VERSION="2024-07-01-preview" # 利用可能な最新バージョンを確認
-        AZURE_OPENAI_IMAGE_DEPLOYMENT_NAME="YOUR_GPT_IMAGE_1_DEPLOYMENT_NAME" # Azureでのデプロイ名
+        AI_HOST=AzureOpenAI
+        AZURE_OPENAI_API_IMAGE_ENDPOINT=https://your-resource.openai.azure.com
+        AZURE_OPENAI_API_IMAGE_MODEL=gpt-image-1
+        AZURE_OPENAI_API_IMAGE_KEY=your-api-key
+        AZURE_OPENAI_API_VERSION=2025-04-01-preview
+        EASY_AUTH_ENABLED=false
+        LOG_LEVEL=INFO
         ```
 
 5. **Streamlitシークレットの設定 (任意: `st.login` をローカルで使う場合):**
@@ -179,12 +187,20 @@ gpt-image-1-streamlit/
 
 ### 環境変数 (`.env` / Azure App Settings)
 
-* `USE_AZURE_OPENAI`: `"true"` または `"false"`。Azure OpenAI Service を使うかどうか。
-* `OPENAI_API_KEY`: OpenAI APIキー または Azure OpenAI APIキー。
-* `AZURE_OPENAI_ENDPOINT`: Azure OpenAI Service のエンドポイントURL (USE_AZURE_OPENAI="true" の場合)。
-* `AZURE_OPENAI_API_VERSION`: 使用するAzure OpenAI APIバージョン (USE_AZURE_OPENAI="true" の場合)。
-* `AZURE_OPENAI_IMAGE_DEPLOYMENT_NAME`: Azure OpenAI Service でのGPT-image-1モデルのデプロイ名 (USE_AZURE_OPENAI="true" の場合)。
-* `KEYVAULT_URI`: (Azure Container AppsでKey Vault参照を使う場合) Key VaultのURI。
+* `AI_HOST`: `"AzureOpenAI"` または `"OpenAI"`。使用するAPIサービスを指定。
+* `EASY_AUTH_ENABLED`: `"true"` または `"false"`。Easy Auth（Azure App Service認証）の有効化。
+* `LOG_LEVEL`: `"DEBUG"` / `"INFO"` / `"WARNING"` / `"ERROR"`。ログレベルの設定。
+
+#### Azure OpenAI Service を使用する場合 (`AI_HOST=AzureOpenAI`)
+
+* `AZURE_OPENAI_API_IMAGE_ENDPOINT`: Azure OpenAI Service のエンドポイントURL。
+* `AZURE_OPENAI_API_IMAGE_MODEL`: Azure OpenAI Service でのGPT-image-1モデルのデプロイ名。
+* `AZURE_OPENAI_API_IMAGE_KEY`: Azure OpenAI APIキー。
+* `AZURE_OPENAI_API_VERSION`: 使用するAzure OpenAI APIバージョン。
+
+#### 通常のOpenAI API を使用する場合 (`AI_HOST=OpenAI`)
+
+* `OPENAI_API_KEY`: OpenAI APIキー。
 
 ### Streamlit シークレット (`.streamlit/secrets.toml`)
 
@@ -193,6 +209,10 @@ gpt-image-1-streamlit/
 ### Streamlit 設定 (`.streamlit/config.toml`)
 
 * アプリのテーマ (`[theme]`) やサーバー設定 (`[server]`) をカスタマイズできます。詳細はStreamlitドキュメントを参照してください。
+
+### カスタムスタイル (`static/theme.css`)
+
+* アプリケーションのビジュアルデザインをカスタマイズするCSSファイルです。ボタンスタイル、ギャラリー表示、アニメーションなどの見た目を定義しています。
 
 ## コントリビューション
 
